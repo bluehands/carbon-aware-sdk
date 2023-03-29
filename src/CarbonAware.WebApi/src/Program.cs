@@ -56,7 +56,8 @@ try
 {
     builder.Services.AddEmissionsServices(builder.Configuration);
     builder.Services.AddForecastServices(builder.Configuration);
-} catch(CarbonAwareException e)
+}
+catch (CarbonAwareException e)
 {
     successfulServices = false;
     errorMessage = e.Message;
@@ -70,12 +71,13 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddMonitoringAndTelemetry(builder.Configuration);
 
-builder.Services.AddSwaggerGen(c => {
-        c.MapType<TimeSpan>(() => new OpenApiSchema { Type = "string", Format = "time-span" });
-    });
+builder.Services.AddSwaggerGen(c =>
+{
+    c.MapType<TimeSpan>(() => new OpenApiSchema { Type = "string", Format = "time-span" });
+});
 
 var app = builder.Build();
- 
+
 if (!successfulServices)
 {
     var _logger = app.Services.GetService<ILogger<Program>>();
@@ -88,11 +90,8 @@ if (config.WebApiRoutePrefix != null)
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI(c => { c.RoutePrefix = ""; c.SwaggerEndpoint("/swagger/v1/swagger.json", "Carbon Aware SDK"); });
 
 
 app.UseHttpsRedirection();
