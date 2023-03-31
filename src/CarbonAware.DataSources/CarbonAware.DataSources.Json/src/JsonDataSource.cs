@@ -10,7 +10,7 @@ namespace CarbonAware.DataSources.Json;
 /// <summary>
 /// Represents a JSON data source.
 /// </summary>
-internal class JsonDataSource : IEmissionsDataSource
+internal class JsonDataSource : IEmissionsDataSource, IForecastDataSource
 {
     public string Name => "JsonDataSource";
 
@@ -53,7 +53,7 @@ internal class JsonDataSource : IEmissionsDataSource
     {
         _logger.LogInformation("JSON data source getting carbon intensity for locations {locations} for period {periodStartTime} to {periodEndTime}.", locations, periodStartTime, periodEndTime);
 
-        IEnumerable<EmissionsData>? emissionsData = await GetJsonDataAsync();
+        IEnumerable<EmissionsData>? emissionsData = await GetJsonEmissionsDataAsync();
         if (emissionsData == null || !emissionsData.Any())
         {
             _logger.LogDebug("Emission data list is empty");
@@ -61,7 +61,7 @@ internal class JsonDataSource : IEmissionsDataSource
         }
         _logger.LogDebug($"Total emission records retrieved {emissionsData.Count()}");
         var stringLocations = locations.Select(loc => loc.Name);
-            
+
         emissionsData = FilterByLocation(emissionsData, stringLocations);
         emissionsData = FilterByDateRange(emissionsData, periodStartTime, periodEndTime);
 
@@ -73,6 +73,30 @@ internal class JsonDataSource : IEmissionsDataSource
         return emissionsData;
     }
 
+    public async Task<EmissionsForecast> GetCurrentCarbonIntensityForecastAsync(Location location)
+    {
+        return await GetCarbonIntensityForecastAsync(location, DateTimeOffset.Now);
+    }
+
+    public async Task<EmissionsForecast> GetCarbonIntensityForecastAsync(Location location, DateTimeOffset requestedAt)
+    {
+        IEnumerable<EmissionsData>? emissionsData = await GetJsonForecastDataAsync();
+        if (emissionsData == null || !emissionsData.Any())
+        {
+            _logger.LogDebug("Emission data list is empty");
+            return new EmissionsForecast();
+        }
+        _logger.LogDebug($"Total emission records retrieved {emissionsData.Count()}");
+
+        
+        return new EmissionsForecast()
+        {
+            Location = location,
+            GeneratedAt = DateTimeOffset.Now,
+            ForecastData = emissionsData,
+            OptimalDataPoints = CarbonAwareOptimalEmission.GetOptimalEmissions(emissionsData)
+        };
+    }
     private IEnumerable<EmissionsData> FilterByDateRange(IEnumerable<EmissionsData> data, DateTimeOffset startTime, DateTimeOffset endTime)
     {
         var (newStartTime, newEndTime) = IntervalHelper.ExtendTimeByWindow(startTime, endTime, MinSamplingWindow);
@@ -96,18 +120,30 @@ internal class JsonDataSource : IEmissionsDataSource
         return data;
     }
 
-    protected virtual async Task<List<EmissionsData>?> GetJsonDataAsync()
+    protected virtual async Task<List<EmissionsData>?> GetJsonEmissionsDataAsync()
     {
         if (_emissionsData is not null)
         {
             return _emissionsData;
         }
-        using Stream stream = GetStreamFromFileLocation();
+
+        await using Stream stream = GetStreamFromFileLocation();
         var jsonObject = await JsonSerializer.DeserializeAsync<EmissionsJsonFile>(stream);
         if (_emissionsData is null || !_emissionsData.Any())
         {
             _emissionsData = jsonObject?.Emissions;
         }
+        return _emissionsData;
+    }
+    protected virtual async Task<List<EmissionsData>?> GetJsonForecastDataAsync()
+    {
+        if (_emissionsData is not null)
+        {
+            return _emissionsData;
+        }
+
+        await using Stream stream = GetStreamFromFileLocation();
+        _emissionsData = await JsonSerializer.DeserializeAsync<List<EmissionsData>>(stream);
         return _emissionsData;
     }
 
@@ -116,4 +152,6 @@ internal class JsonDataSource : IEmissionsDataSource
         _logger.LogInformation($"Reading Json data from {_configuration.DataFileLocation}");
         return File.OpenRead(_configuration.DataFileLocation!);
     }
+
+
 }

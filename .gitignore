@@ -5,6 +5,7 @@
 *.suo
 .suo
 .vs
+*.user
 
 bin
 out
@@ -34,3 +35,8 @@ src/data/location-sources/custom-azure-zones.json
 # exclude artifacts on java-client example
 samples/java-client/target
 /src/CarbonAware.WebApi/src/CarbonAware.WebApi.csproj.user
+/src/data/data-sources/test-data-wt-de-emissions.json
+/src/data/data-sources/test-data-wt-de-emissions.input.json
+/src/CarbonAware.WebApi/src/Properties/serviceDependencies.carbon-aware-sdk-de - Zip Deploy.json
+/src/CarbonAware.WebApi/src/Properties/PublishProfiles/carbon-aware-sdk-de - Zip Deploy.pubxml
+/src/CarbonAware.WebApi/src/Properties/ServiceDependencies/carbon-aware-sdk-de - Zip Deploy/profile.arm.json

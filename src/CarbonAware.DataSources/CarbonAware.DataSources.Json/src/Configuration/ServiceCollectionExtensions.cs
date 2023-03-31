@@ -17,4 +17,13 @@ internal static class ServiceCollectionExtensions
         });
         services.TryAddSingleton<IEmissionsDataSource, JsonDataSource>();
     }
+    public static IServiceCollection AddJsonForecastDataSource(this IServiceCollection services, DataSourcesConfiguration dataSourcesConfig)
+    {
+        services.Configure<JsonDataSourceConfiguration>(config =>
+        {
+            dataSourcesConfig.ForecastConfigurationSection().Bind(config);
+        });
+        services.TryAddSingleton<IForecastDataSource, JsonDataSource>();
+        return services;
+    }
 }
