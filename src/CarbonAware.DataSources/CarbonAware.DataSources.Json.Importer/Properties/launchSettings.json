@@ -2,7 +2,8 @@
   "profiles": {
     "CarbonAware.DataSources.Json.Importer": {
       "commandName": "Project",
-      "commandLineArgs": "--source WattTime --input-file \"C:\\Users\\MirMohammadi\\Projekte\\Carbon Aware SDK\\src\\data\\data-sources\\test-data-wt-de-emissions.input.json\" --output-file \"C:\\Users\\MirMohammadi\\Projekte\\Carbon Aware SDK\\src\\data\\data-sources\\test-data-wt-de-emissions.json\""
+      //"commandLineArgs": "--source WattTime --input-file \"C:\\Users\\MirMohammadi\\Projekte\\Carbon Aware SDK\\src\\data\\data-sources\\test-data-wt-de-emissions.input.json\" --output-file \"C:\\Users\\MirMohammadi\\Projekte\\Carbon Aware SDK\\src\\data\\data-sources\\test-data-wt-de-emissions.csv\""
+      "commandLineArgs": "--source ElectricityMaps --input-file \"C:\\Users\\MirMohammadi\\Projekte\\Carbon Aware SDK\\src\\data\\data-sources\\test-data-em-de-emissions.input.json\" --output-file \"C:\\Users\\MirMohammadi\\Projekte\\Carbon Aware SDK\\src\\data\\data-sources\\test-data-em-de-emissions.csv\""
     }
   }
 }

@@ -12,3 +12,7 @@ internal record WattTimeForecast(
     [property: JsonPropertyName("version")] string Version,
     [property: JsonPropertyName("ba")] string Ba
 );
+
+
+
+
