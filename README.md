@@ -1,5 +1,7 @@
 # Carbon Aware SDK
 
+This is an unofficial fork of the Green Software Foundation [Carbon Aware SDK](https://github.com/Green-Software-Foundation/carbon-aware-sdk).
+
 You can reduce the carbon footprint of your application by just running things
 at different times and in different locations. That is because not all
 electricity is produced in the same way. Most is produced through burning fossil

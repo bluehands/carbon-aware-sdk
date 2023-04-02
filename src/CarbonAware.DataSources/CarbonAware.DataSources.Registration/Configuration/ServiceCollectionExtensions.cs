@@ -2,6 +2,7 @@ using CarbonAware.Configuration;
 using CarbonAware.Interfaces;
 using CarbonAware.DataSources.ElectricityMaps.Configuration;
 using CarbonAware.DataSources.Json.Configuration;
+using CarbonAware.DataSources.Memory.Configuration;
 using CarbonAware.DataSources.WattTime.Configuration;
 using CarbonAware.Exceptions;
 using Microsoft.Extensions.Configuration;
@@ -57,6 +58,11 @@ internal static class ServiceCollectionExtensions
             case DataSourceType.ElectricityMaps:
             {
                 services.AddElectricityMapsForecastDataSource(dataSources);
+                break;
+            }
+            case DataSourceType.Memory:
+            {
+                services.AddMemoryForecastDataSource();
                 break;
             }
             case DataSourceType.None:

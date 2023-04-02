@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<RootNamespace>lib_integration2</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="..\..\src\data\data-sources\**\*.json" Link="\data-sources\json\%(RecursiveDir)%(Filename)%(Extension)">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\CarbonAware.DataSources\CarbonAware.DataSources.Memory\CarbonAware.DataSources.Memory.csproj" />
+	  <ProjectReference Include="..\..\src\GSF.CarbonAware\src\GSF.CarbonAware.csproj" />
+	</ItemGroup>
+
+</Project>
