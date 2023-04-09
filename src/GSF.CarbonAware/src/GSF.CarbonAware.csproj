@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<PackageId>GSF.CarbonAware.Unofficial</PackageId>
-		<Version>1.0.2-beta</Version>
+		<Version>1.0.2</Version>
 		<Authors>bluehands</Authors>
 		<Company></Company>
 		<PackageTags>Green Software Foundation;GSF;Microsoft; bluehands</PackageTags>
